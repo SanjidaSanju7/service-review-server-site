@@ -22,19 +22,28 @@ async function run() {
 
     try {
         const serviceCollection = client.db('photographyCrud').collection('services');
+        const reviewCollection = client.db('photographyCrud').collection('reviews');
+
         // all data
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
-        })
+        });
         // specific data with id
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const service = await serviceCollection.findOne(query);
             res.send(service);
+        });
+
+        // reviews api
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.send(result);
         })
 
 
