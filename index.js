@@ -53,14 +53,13 @@ async function run() {
         })
 
 
-        // all data
+        // all services data
         app.get('/services', async (req, res) => {
             const query = {}
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
         });
-
 
         // specific data with id
         app.get('/services/:id', async (req, res) => {
@@ -76,6 +75,16 @@ async function run() {
             const result = await serviceCollection.insertOne(service);
             res.send(result);
         });
+
+
+        // limited services
+
+        app.get('/home-services', async (req, res) => {
+            let query = {};
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.limit(3).toArray()
+            res.send(services)
+        })
 
 
         // reviews api
